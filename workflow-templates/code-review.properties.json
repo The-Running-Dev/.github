@@ -1,0 +1,7 @@
+{
+    "name": "Code Review (Claude)",
+    "description": "Runs Claude Code's automated review on every non-draft pull request and posts findings as inline comments.",
+    "iconName": "octicon codescan",
+    "categories": ["Automation"],
+    "filePatterns": []
+}
