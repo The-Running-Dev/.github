@@ -1,23 +1,18 @@
-# Shared Claude Code workflow for SubZeroDev repos. Not part of the public
-# GitHub-ActionTemplates library.
+# Shared Claude Code pull request review for SubZeroDev repos. Not part of
+# the public GitHub-ActionTemplates library.
 #
-# `mode: review` reviews a pull request with the code-review plugin and posts
-# the findings as comments. Call it from a `pull_request` workflow.
-#
-# `mode: mention` answers `@claude` in issue comments, review comments,
-# reviews and issues. Call it from a workflow triggered by those events; runs
-# without `@claude` are skipped here, so the caller needs no filter.
+# Reviews a pull request with the code-review plugin and posts the findings
+# as comments. Call it from a `pull_request` workflow. `@claude` mentions are
+# `claude-mention.yml`: GitHub checks every nested job's permissions against
+# the caller's, skipped or not, so the two can't share a file without every
+# review caller granting write access.
 name: Claude review
 
 on:
   workflow_call:
     inputs:
-      mode:
-        description: "`review` (pull request review) or `mention` (answer `@claude`)."
-        type: string
-        default: review
       prompt:
-        description: "Prompt override. `review` defaults to the code-review plugin on the pull request; `mention` defaults to the comment."
+        description: "Prompt override. Defaults to the code-review plugin on the pull request."
         type: string
         default: ""
       model:
@@ -25,11 +20,11 @@ on:
         type: string
         default: ""
       skip-drafts:
-        description: "Skip draft pull requests in `review` mode."
+        description: "Skip draft pull requests."
         type: boolean
         default: true
       skip-bots:
-        description: "Skip events raised by bots."
+        description: "Skip pull requests opened by bots."
         type: boolean
         default: true
     secrets:
@@ -42,7 +37,6 @@ jobs:
   review:
     name: Review
     if: >-
-      inputs.mode == 'review' &&
       github.event.pull_request &&
       !(inputs.skip-drafts && github.event.pull_request.draft) &&
       !(inputs.skip-bots && github.event.pull_request.user.type == 'Bot')
@@ -66,35 +60,3 @@ jobs:
           plugins: code-review@claude-code-plugins
           prompt: ${{ inputs.prompt || format('/code-review:code-review --comment {0}/pull/{1}', github.repository, github.event.pull_request.number) }}
           claude_args: ${{ inputs.model && format('--model {0}', inputs.model) || '' }}
-
-  mention:
-    name: Mention
-    if: >-
-      inputs.mode == 'mention' &&
-      !(inputs.skip-bots && github.event.sender.type == 'Bot') &&
-      (
-        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
-        (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
-        (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
-      )
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      id-token: write
-      actions: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          prompt: ${{ inputs.prompt }}
-          claude_args: ${{ inputs.model && format('--model {0}', inputs.model) || '' }}
-          additional_permissions: |
-            actions: read

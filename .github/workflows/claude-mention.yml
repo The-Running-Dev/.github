@@ -1,0 +1,61 @@
+# Shared Claude Code `@claude` responder for SubZeroDev repos. Not part of
+# the public GitHub-ActionTemplates library.
+#
+# Answers `@claude` in issue comments, review comments, reviews and issues.
+# Call it from a workflow triggered by those events; runs without `@claude`
+# are skipped here, so the caller needs no filter. Pull request review is
+# `claude-review.yml`.
+name: Claude mention
+
+on:
+  workflow_call:
+    inputs:
+      prompt:
+        description: "Prompt override. Empty answers the comment."
+        type: string
+        default: ""
+      model:
+        description: "Model passed to Claude Code as `--model`. Empty uses the action's default."
+        type: string
+        default: ""
+      skip-bots:
+        description: "Skip events raised by bots."
+        type: boolean
+        default: true
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN:
+        required: true
+
+permissions: {}
+
+jobs:
+  mention:
+    name: Mention
+    if: >-
+      !(inputs.skip-bots && github.event.sender.type == 'Bot') &&
+      (
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+        (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: ${{ inputs.prompt }}
+          claude_args: ${{ inputs.model && format('--model {0}', inputs.model) || '' }}
+          additional_permissions: |
+            actions: read
