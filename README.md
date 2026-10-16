@@ -15,19 +15,22 @@ To use it in a repo:
 3. Actions tab → New workflow → pick "Code Review (Claude)" → commit it as
    `.github/workflows/code-review.yml`.
 
-## .github/workflows/claude-review.yml
+## .github/workflows/claude-review.yml and claude-mention.yml
 
-Shared Claude Code workflow for SubZeroDev repos, kept here rather than in the public
-GitHub-ActionTemplates library. It needs the [Claude GitHub App](https://github.com/apps/claude)
+Shared Claude Code workflows for SubZeroDev repos, kept here rather than in the public
+GitHub-ActionTemplates library. They need the [Claude GitHub App](https://github.com/apps/claude)
 on the calling repo and a `CLAUDE_CODE_OAUTH_TOKEN` secret.
 
-| Input | Default | Meaning |
-| --- | --- | --- |
-| `mode` | `review` | `review` reviews the pull request with the code-review plugin; `mention` answers `@claude` |
-| `prompt` | | Prompt override |
-| `model` | | Passed to Claude Code as `--model` |
-| `skip-drafts` | `true` | Skip draft pull requests in `review` mode |
-| `skip-bots` | `true` | Skip events raised by bots |
+They are two files because GitHub checks every nested job's permissions against the caller's,
+even jobs that would be skipped. Review needs only read access to contents and issues;
+answering `@claude` needs write access.
+
+| Input | Workflow | Default | Meaning |
+| --- | --- | --- | --- |
+| `prompt` | both | | Prompt override |
+| `model` | both | | Passed to Claude Code as `--model` |
+| `skip-drafts` | review | `true` | Skip draft pull requests |
+| `skip-bots` | both | `true` | Skip events raised by bots |
 
 Pull request review:
 
@@ -68,9 +71,7 @@ permissions: {}
 
 jobs:
   claude:
-    uses: The-Running-Dev/.github/.github/workflows/claude-review.yml@main
-    with:
-      mode: mention
+    uses: The-Running-Dev/.github/.github/workflows/claude-mention.yml@main
     permissions:
       contents: write
       pull-requests: write
