@@ -1,0 +1,21 @@
+# .NET from the shared library: build, test and coverage on every push and pull request;
+# a v* tag packs and publishes. Inputs: https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/dotnet.md
+name: .NET
+
+on:
+  push:
+    branches: [$default-branch]
+    tags: ['v*']
+  pull_request:
+
+permissions: {}
+
+jobs:
+  dotnet:
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    uses: The-Running-Dev/GitHub-ActionTemplates/.github/workflows/dotnet.yml@v1
+    with:
+      coverage: true

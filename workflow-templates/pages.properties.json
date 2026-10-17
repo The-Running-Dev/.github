@@ -1,0 +1,7 @@
+{
+    "name": "Pages",
+    "description": "Builds a static site or single-page app with Node and deploys it to GitHub Pages from the default branch, through the shared library's pages.yml.",
+    "iconName": "octicon browser",
+    "categories": ["Pages", "Deployment", "JavaScript"],
+    "filePatterns": ["^index[.]html$", "^vite[.]config[.]"]
+}

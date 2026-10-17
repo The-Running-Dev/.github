@@ -1,0 +1,7 @@
+{
+    "name": "Claude",
+    "description": "Answers @claude in issues and pull requests with Claude Code, through the shared claude-mention.yml.",
+    "iconName": "octicon comment-discussion",
+    "categories": ["Automation"],
+    "filePatterns": []
+}

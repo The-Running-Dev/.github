@@ -2,18 +2,29 @@
 
 Org-wide default community health files and [workflow templates](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflow-templates-and-actions) for The-Running-Dev.
 
-## workflow-templates/code-review.yml
+## workflow-templates/
 
-Adds Claude Code's automated review as a suggested GitHub Actions workflow in every repo's
-Actions tab ("New workflow"). It runs on every non-draft pull request and posts findings as
-inline PR comments.
+Suggested workflows for the Actions tab ("New workflow"). Each one is a short caller of a shared
+workflow, so a repo gets the library's behaviour without copying it. GitHub suggests a template
+first when the repo matches its `filePatterns`.
 
-To use it in a repo:
+| Template | Calls | Suggested for |
+| --- | --- | --- |
+| Node CI | [`node-ci.yml@v1`](https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/node-ci.md) | `package.json` |
+| PowerShell CI | [`pwsh-ci.yml@v1`](https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/pwsh-ci.md) | `*.psd1`, `*.ps1` |
+| .NET | [`dotnet.yml@v1`](https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/dotnet.md) | `*.sln`, `*.slnx`, `*.csproj`, `global.json`, `Directory.Build.props` |
+| Docs | [`docs.yml@v1`](https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/docs.md) | `docusaurus.config.*` |
+| Pages | [`pages.yml@v1`](https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/pages.md) | `index.html`, `vite.config.*` |
+| Container | [`container.yml@v1`](https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/container.md) | `Dockerfile*`, `compose.yml` |
+| npm package | [`npm-package.yml@v1`](https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/npm-package.md) | `package.json` |
+| Claude review | [`claude-review.yml@main`](#githubworkflowsclaude-reviewyml-and-claude-mentionyml) | |
+| Claude | [`claude-mention.yml@main`](#githubworkflowsclaude-reviewyml-and-claude-mentionyml) | |
 
-1. Install the [Claude GitHub App](https://github.com/apps/claude) on that repo.
-2. Add an `ANTHROPIC_API_KEY` secret (repo or org level).
-3. Actions tab → New workflow → pick "Code Review (Claude)" → commit it as
-   `.github/workflows/code-review.yml`.
+The library templates need no inputs. Each links to its inputs page; add `with:` lines there as
+needed. npm package passes an `NPM_TOKEN` secret, which can be dropped with trusted publishing.
+
+The Claude templates need the [Claude GitHub App](https://github.com/apps/claude) on the repo
+and a `CLAUDE_CODE_OAUTH_TOKEN` secret (repo or org level).
 
 ## .github/workflows/claude-review.yml and claude-mention.yml
 

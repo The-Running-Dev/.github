@@ -1,0 +1,7 @@
+{
+    "name": "Node CI",
+    "description": "Installs, runs the package.json scripts you name, and reports test results and coverage, through the shared library's node-ci.yml.",
+    "iconName": "octicon checklist",
+    "categories": ["Continuous integration", "JavaScript", "TypeScript"],
+    "filePatterns": ["^package[.]json$"]
+}

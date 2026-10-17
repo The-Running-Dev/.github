@@ -1,0 +1,20 @@
+# Container image from the shared library: built and smoke-tested on every pull request, pushed
+# to GHCR from the default branch and v* tags. Inputs: https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/container.md
+name: Container
+
+on:
+  push:
+    branches: [$default-branch]
+    tags: ['v*']
+  pull_request:
+
+permissions: {}
+
+jobs:
+  image:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: The-Running-Dev/GitHub-ActionTemplates/.github/workflows/container.yml@v1

@@ -1,0 +1,15 @@
+# Docusaurus docs from the shared library: built on every pull request, deployed to GitHub Pages
+# from the default branch. Inputs: https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/docs.md
+name: Docs
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+
+permissions: {}
+
+jobs:
+  docs:
+    permissions: { contents: read, pages: write, id-token: write }
+    uses: The-Running-Dev/GitHub-ActionTemplates/.github/workflows/docs.yml@v1
