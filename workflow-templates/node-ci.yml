@@ -1,0 +1,18 @@
+# Node CI from the shared library: install, the package.json scripts in `scripts`, test
+# results and coverage. Inputs: https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/node-ci.md
+name: CI
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+
+permissions: {}
+
+jobs:
+  ci:
+    permissions:
+      contents: read
+    uses: The-Running-Dev/GitHub-ActionTemplates/.github/workflows/node-ci.yml@v1
+    with:
+      scripts: lint test

@@ -1,0 +1,21 @@
+# npm package from the shared library: tested and packed on every pull request; a v* tag
+# publishes it. Inputs: https://github.com/The-Running-Dev/GitHub-ActionTemplates/blob/main/docs/npm-package.md
+name: Package
+
+on:
+  push:
+    branches: [$default-branch]
+    tags: ['v*']
+  pull_request:
+
+permissions: {}
+
+jobs:
+  package:
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    uses: The-Running-Dev/GitHub-ActionTemplates/.github/workflows/npm-package.yml@v1
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # omit with trusted publishing

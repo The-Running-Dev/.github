@@ -1,0 +1,7 @@
+{
+    "name": "npm package",
+    "description": "Tests and packs an npm package; a v* tag publishes it, through the shared library's npm-package.yml.",
+    "iconName": "octicon package",
+    "categories": ["Continuous integration", "JavaScript", "TypeScript"],
+    "filePatterns": ["^package[.]json$"]
+}

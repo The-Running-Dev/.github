@@ -1,6 +1,6 @@
 {
-    "name": "Code Review (Claude)",
-    "description": "Runs Claude Code's automated review on every non-draft pull request and posts findings as inline comments.",
+    "name": "Claude review",
+    "description": "Reviews every pull request with Claude Code and posts the findings as comments, through the shared claude-review.yml.",
     "iconName": "octicon codescan",
     "categories": ["Automation"],
     "filePatterns": []

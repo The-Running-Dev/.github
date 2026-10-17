@@ -1,0 +1,7 @@
+{
+    "name": "PowerShell CI",
+    "description": "Runs PSScriptAnalyzer and Pester with test results and coverage, through the shared library's pwsh-ci.yml.",
+    "iconName": "octicon terminal",
+    "categories": ["Continuous integration", "PowerShell"],
+    "filePatterns": ["[.]psd1$", "[.]ps1$"]
+}

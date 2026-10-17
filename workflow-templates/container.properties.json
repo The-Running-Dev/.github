@@ -1,0 +1,7 @@
+{
+    "name": "Container",
+    "description": "Builds and smoke-tests a container image, and pushes it to GHCR from the default branch and v* tags, through the shared library's container.yml.",
+    "iconName": "octicon container",
+    "categories": ["Continuous integration", "Deployment", "Dockerfile"],
+    "filePatterns": ["^Dockerfile", "^compose[.]ya?ml$"]
+}

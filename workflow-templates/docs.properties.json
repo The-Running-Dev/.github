@@ -1,0 +1,7 @@
+{
+    "name": "Docs",
+    "description": "Builds the Docusaurus docs on pull requests and deploys them to GitHub Pages from the default branch, through the shared library's docs.yml.",
+    "iconName": "octicon book",
+    "categories": ["Pages", "Deployment"],
+    "filePatterns": ["^docusaurus[.]config[.]"]
+}

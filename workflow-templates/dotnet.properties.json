@@ -1,0 +1,7 @@
+{
+    "name": ".NET",
+    "description": "Builds and tests a .NET solution with coverage; a v* tag packs and publishes, through the shared library's dotnet.yml.",
+    "iconName": "octicon package",
+    "categories": ["Continuous integration", "C#"],
+    "filePatterns": ["[.]slnx?$", "[.]csproj$", "^global[.]json$", "^Directory[.]Build[.]props$"]
+}
