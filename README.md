@@ -43,7 +43,7 @@ answering `@claude` needs write access.
 | `skip-drafts` | review | `true` | Skip draft pull requests |
 | `skip-bots` | both | `true` | Skip events raised by bots |
 
-Pull request review:
+Pull request review (the `if` skips fork pull requests, which GitHub gives no secrets, so the call would fail on the missing `CLAUDE_CODE_OAUTH_TOKEN`):
 
 ```yaml
 on:
@@ -54,6 +54,7 @@ permissions: {}
 
 jobs:
   claude-review:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     uses: The-Running-Dev/.github/.github/workflows/claude-review.yml@main
     permissions:
       contents: read
